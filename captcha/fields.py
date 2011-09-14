@@ -88,7 +88,6 @@ class CaptchaField(MultiValueField):
     def clean(self, value):
         super(CaptchaField, self).clean(value)
         response, value[1] = value[1].strip().lower(), ''
-        CaptchaStore.remove_expired()
         try:
             store = CaptchaStore.objects.get(response=response, hashkey=value[0], expiration__gt=datetime.datetime.now())
             store.delete()
